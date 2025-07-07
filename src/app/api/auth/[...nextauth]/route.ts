@@ -1,13 +1,10 @@
-// src/app/api/auth/[...nextauth]/route.ts
-
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import { env } from "~/env";
 import { db } from "~/server/db";
 
-// Initialize NextAuth (no export here)
-const { handlers } = NextAuth({
+const handler = NextAuth({
   adapter: PrismaAdapter(db),
   providers: [
     Google({
@@ -19,5 +16,5 @@ const { handlers } = NextAuth({
   session: { strategy: "jwt" },
 });
 
-// ✅ Export only GET and POST (this is required in /app/api)
-export const { GET, POST } = handlers;
+// ✅ Correct export for App Router
+export { handler as GET, handler as POST };
